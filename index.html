@@ -2,7 +2,8 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>PıleySiteyşın 6 - Ultimate China Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PıleySiteyşın 6 - Tablet Edition</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Saira:wght@300;500;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
@@ -15,7 +16,8 @@
 
         body {
             margin: 0; padding: 0; background-color: black; color: white;
-            font-family: 'Saira', sans-serif; overflow: hidden; height: 100vh; user-select: none;
+            font-family: 'Saira', sans-serif; overflow: hidden; height: 100vh; width: 100vw;
+            user-select: none; -webkit-user-select: none; touch-action: none; /* Mobilde kaydırmayı engelle */
         }
 
         /* DUVAR KAĞIDI & EFEKTLER */
@@ -24,12 +26,12 @@
             background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 90%);
         }
         .watermark {
-            position: fixed; bottom: 10px; right: 10px; 
-            font-family: Arial, sans-serif; font-size: 14px; color: #333; 
+            position: fixed; bottom: 120px; right: 10px; 
+            font-family: Arial, sans-serif; font-size: 10px; color: #333; 
             font-weight: bold; pointer-events: none; z-index: 50;
         }
 
-        /* FLASHBANG (BEYAZ IŞIK - KÖR EDİCİ) */
+        /* FLASHBANG */
         .flash-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: white; z-index: 99999; display: none;
@@ -40,65 +42,131 @@
         .setup-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #111; z-index: 10000; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; border: 10px solid var(--china-red);
+            align-items: center; justify-content: center; border: 5px solid var(--china-red);
+            padding: 20px; box-sizing: border-box;
         }
-        .setup-input { margin: 10px; padding: 10px; width: 300px; background: #222; color: white; border: 1px solid #555; }
-        .setup-btn { background: var(--china-red); color: white; padding: 15px 40px; font-size: 1.2rem; cursor: pointer; border: none; font-weight: bold; }
+        .setup-input { margin: 10px; padding: 15px; width: 80%; max-width: 300px; background: #222; color: white; border: 1px solid #555; font-size: 1rem; }
+        .setup-btn { background: var(--china-red); color: white; padding: 15px 40px; font-size: 1.2rem; cursor: pointer; border: none; font-weight: bold; margin-top: 20px; border-radius: 5px; }
 
         /* ANA ARAYÜZ */
         .top-bar {
-            display: flex; justify-content: space-between; padding: 20px 40px; background: rgba(20,20,20,0.9); border-bottom: 2px solid #333;
+            display: flex; justify-content: space-between; padding: 15px 20px; background: rgba(20,20,20,0.9); border-bottom: 2px solid #333;
+            align-items: center;
         }
-        .tabs { display: flex; gap: 20px; }
-        .tab { padding: 5px 15px; color: #777; font-weight: bold; cursor: pointer; }
+        .logo-text { font-size: 1.2rem; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        
+        .tabs { display: flex; gap: 15px; }
+        .tab { padding: 5px 10px; color: #777; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
         .tab.active { color: white; border-bottom: 3px solid var(--china-red); }
 
-        .wifi-icon { margin-right: 10px; color: #444; }
+        .wifi-area { display: flex; align-items: center; font-size: 0.9rem; }
+        .wifi-icon { margin-right: 5px; color: #444; }
         .wifi-icon.on { color: #0f0; text-shadow: 0 0 5px #0f0; }
         .wifi-icon.hacker { color: #0f0; text-shadow: 0 0 10px #0f0; animation: pulse 0.5s infinite; }
 
         @keyframes pulse { 0% { opacity: 0.5; } 100% { opacity: 1; } }
 
+        /* KARTLAR */
+        .scroll-wrapper {
+            overflow: hidden; width: 100%; margin-top: 30px; height: 60vh; position: relative;
+        }
         .card-container {
-            display: flex; gap: 30px; padding: 50px; margin-top: 20px; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            display: flex; gap: 20px; padding-left: 50vw; /* Center start */
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         .card {
-            min-width: 220px; height: 320px; background: #222; border-radius: 10px;
+            min-width: 200px; height: 280px; background: #222; border-radius: 10px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border: 4px solid transparent; position: relative;
+            border: 4px solid transparent; position: relative; flex-shrink: 0;
+            transform: translateX(-50%); /* Center correction */
         }
-        .card.selected { transform: scale(1.1); border-color: white; background: #333; z-index: 10; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
-        .card i { font-size: 5rem; margin-bottom: 20px; color: #888; }
-        .lock-icon { position: absolute; top: 10px; right: 10px; color: red; font-size: 1.5rem; }
+        .card.selected { 
+            transform: translateX(-50%) scale(1.1); 
+            border-color: white; background: #333; z-index: 10; 
+            box-shadow: 0 0 20px rgba(255,255,255,0.2); 
+        }
+        .card i { font-size: 4rem; margin-bottom: 20px; color: #888; }
+        .card h2 { font-size: 1.2rem; text-align: center; padding: 0 10px; }
 
-        /* APP PENCERELERİ */
+        /* APP PENCERELERİ (Responsive) */
         .app-window {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; box-sizing: border-box;
         }
 
         /* NETFİLİZ */
         .netfiliz-bg { background: #000; color: #e50914; text-align: center; }
-        .gihun-img { width: 300px; height: 300px; background: gray; margin-bottom: 20px; background-size: cover; border: 5px solid #222; }
+        .gihun-img { width: 80%; max-width: 300px; height: 300px; background: gray; margin-bottom: 20px; background-size: cover; border: 5px solid #222; margin: 0 auto 20px auto; }
 
         /* YUTUB */
-        .yutub-bg { background: white; color: black; text-align: center; width: 80%; height: 80%; position: relative; }
+        .yutub-bg { background: white; color: black; text-align: center; width: 95%; height: 60%; position: relative; border-radius: 10px; overflow: hidden; }
         .yutub-video { height: 70%; background: black; display: flex; align-items: center; justify-content: center; color: white; flex-direction: column; }
 
-        /* BROWSER (CHROME) */
-        .browser-frame { width: 80%; height: 80%; background: white; border-radius: 5px; overflow: hidden; display: flex; flex-direction: column; }
-        .url-bar { background: #eee; padding: 10px; border-bottom: 1px solid #ccc; color: #333; font-family: monospace; display: flex; gap: 10px; align-items: center; }
-        .web-view { flex: 1; padding: 20px; color: black; font-family: sans-serif; overflow-y: auto; background: white; }
-        .web-link { padding: 10px; margin: 5px 0; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; }
+        /* BROWSER */
+        .browser-frame { width: 95%; height: 80%; background: white; border-radius: 5px; overflow: hidden; display: flex; flex-direction: column; }
+        .url-bar { background: #eee; padding: 10px; border-bottom: 1px solid #ccc; color: #333; font-family: monospace; display: flex; gap: 10px; align-items: center; font-size: 0.8rem; }
+        .web-view { flex: 1; padding: 15px; color: black; font-family: sans-serif; overflow-y: auto; background: white; }
+        .web-link { padding: 15px; margin: 5px 0; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
         .web-link.hover { background: #e3f2fd; border-color: #2196f3; }
 
-        /* GAME CANVAS */
-        canvas { background: #333; border: 4px solid white; image-rendering: pixelated; }
+        /* GAME CANVAS (Responsive) */
+        canvas { 
+            background: #333; border: 2px solid white; image-rendering: pixelated; 
+            max-width: 100%; height: auto; max-height: 60vh;
+        }
 
-        /* NOTIFICATION TOAST */
+        /* TOAST */
         .toast {
-            position: fixed; top: 20px; right: 20px; background: #333; color: white; padding: 15px 30px;
-            border-left: 5px solid var(--fake-gold); font-size: 1.2rem; display: none; z-index: 6000;
+            position: fixed; top: 10px; left: 50%; transform: translateX(-50%); 
+            background: #333; color: white; padding: 10px 20px; width: 80%; text-align: center;
+            border-bottom: 3px solid var(--fake-gold); font-size: 1rem; display: none; z-index: 6000; border-radius: 5px;
+        }
+
+        /* --- SANAL KONTROLCÜ (TABLET İÇİN) --- */
+        #virtual-controls {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 160px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            z-index: 8000; display: flex; justify-content: space-between; padding: 10px 30px; box-sizing: border-box;
+            pointer-events: none; /* Arka planı tıklanabilir yap */
+        }
+        
+        .dpad {
+            position: relative; width: 140px; height: 140px; pointer-events: auto;
+        }
+        .dbtn {
+            position: absolute; width: 45px; height: 45px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; color: rgba(255,255,255,0.7);
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
+        }
+        .dbtn:active { background: rgba(255,255,255,0.4); transform: scale(0.95); }
+        .d-up { top: 0; left: 47.5px; }
+        .d-down { bottom: 0; left: 47.5px; }
+        .d-left { top: 47.5px; left: 0; }
+        .d-right { top: 47.5px; right: 0; }
+
+        .action-pad {
+            display: flex; gap: 20px; align-items: center; pointer-events: auto;
+        }
+        .abtn {
+            width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3);
+            color: white; font-weight: bold; display: flex; justify-content: center; align-items: center; cursor: pointer;
+            font-size: 0.9rem; -webkit-tap-highlight-color: transparent;
+        }
+        .abtn:active { background: white; color: black; transform: scale(0.95); }
+        .abtn.red { border-color: #d32f2f; color: #ff8a80; }
+        .abtn.blue { border-color: #2196f3; color: #82b1ff; }
+        .abtn.green { border-color: #4caf50; color: #b9f6ca; width: 70px; height: 70px; font-size: 1.2rem; }
+
+        /* Tablet/Mobil Görünüm Ayarları */
+        @media (max-width: 768px) {
+            .top-bar { padding: 10px; }
+            .logo-text i { font-size: 1rem; }
+            .logo-text span { font-size: 1rem; }
+            .tabs .tab { font-size: 0.7rem; padding: 5px; }
+            .card { min-width: 160px; height: 220px; }
+            .card i { font-size: 3rem; }
+            .setup-box { width: 90%; }
         }
 
     </style>
@@ -113,36 +181,46 @@
 
     <!-- KURULUM -->
     <div class="setup-screen" id="setup">
-        <h1 style="color: var(--china-red);">KURULUM SİHİRBAZI (Çalıntı OS)</h1>
-        <p>Bilgilerinizi girin, gerisine karışmayın.</p>
+        <h1 style="color: var(--china-red); text-align: center;">KURULUM SİHİRBAZI</h1>
+        <p style="text-align:center; color: #aaa;">Tablet Sürümü V1.0</p>
         <input type="text" id="reg-name" class="setup-input" placeholder="Adınız">
-        <input type="text" id="reg-tc" class="setup-input" placeholder="TC Kimlik (Zorunlu)">
-        <input type="text" id="reg-mother" class="setup-input" placeholder="Kızlık Soyadı (Güvenlik İçin)">
         <button class="setup-btn" onclick="finishSetup()">KAYIT OL</button>
     </div>
 
     <!-- UI -->
     <div class="top-bar">
-        <div style="font-size: 1.5rem; font-weight: bold;">
-            <i class="fab fa-playstation" style="color:red;"></i> PıleySiteyşın 6
+        <div class="logo-text">
+            <i class="fab fa-playstation" style="color:red;"></i> 
+            <span>PıleySiteyşın 6</span>
         </div>
         <div class="tabs">
-            <div class="tab active" id="tab-games">OYUNLAR [Q]</div>
-            <div class="tab" id="tab-media">MEDYA [W]</div>
-            <div class="tab" id="tab-web">WEB [E]</div>
+            <div class="tab active" id="tab-games" onclick="switchTab('games')">OYUNLAR</div>
+            <div class="tab" id="tab-media" onclick="switchTab('media')">MEDYA</div>
+            <div class="tab" id="tab-web" onclick="switchTab('web')">WEB</div>
         </div>
-        <div>
-            <i class="fas fa-wifi wifi-icon" id="wifi-icon"></i>
+        <div class="wifi-area">
+            <i class="fas fa-wifi wifi-icon" id="wifi-icon" onclick="openWifiMenu()"></i>
             <span id="username-display">Misafir</span>
         </div>
     </div>
 
-    <div style="overflow: hidden; width: 100%; margin-top: 50px;">
+    <div class="scroll-wrapper">
         <div class="card-container" id="card-row"></div>
     </div>
 
-    <div style="position:fixed; bottom: 20px; left: 50px; color: gray;">
-        [OK] Gezin • [ENTER] Seç • [ESC] Geri • [İ] İnternet Menüsü
+    <!-- SANAL KONTROLCÜ -->
+    <div id="virtual-controls">
+        <div class="dpad">
+            <div class="dbtn d-up" ontouchstart="simKey('ArrowUp')" onmousedown="simKey('ArrowUp')"><i class="fas fa-chevron-up"></i></div>
+            <div class="dbtn d-down" ontouchstart="simKey('ArrowDown')" onmousedown="simKey('ArrowDown')"><i class="fas fa-chevron-down"></i></div>
+            <div class="dbtn d-left" ontouchstart="simKey('ArrowLeft')" onmousedown="simKey('ArrowLeft')"><i class="fas fa-chevron-left"></i></div>
+            <div class="dbtn d-right" ontouchstart="simKey('ArrowRight')" onmousedown="simKey('ArrowRight')"><i class="fas fa-chevron-right"></i></div>
+        </div>
+        <div class="action-pad">
+            <div class="abtn blue" ontouchstart="simKey('i')" onmousedown="simKey('i')">WIFI</div>
+            <div class="abtn red" ontouchstart="simKey('Escape')" onmousedown="simKey('Escape')">GERİ</div>
+            <div class="abtn green" ontouchstart="simKey('Enter')" onmousedown="simKey('Enter')">SEÇ</div>
+        </div>
     </div>
 
     <!-- === UYGULAMALAR === -->
@@ -150,43 +228,42 @@
     <!-- WIFI MENÜ -->
     <div class="app-window" id="app-wifi">
         <h1 style="color: #00a8ff;">AĞ SEÇİMİ</h1>
-        <div style="background:#111; padding:20px; width:400px; border:1px solid #333;">
+        <div style="background:#111; padding:20px; width:100%; max-width:400px; border:1px solid #333; text-align: left;">
             <div class="menu-item active" id="wifi-0">1. Ev İnterneti (ÇÖP)</div>
             <div class="menu-item" id="wifi-1">2. Komşunun WiFi (İDARE EDER)</div>
             <div class="menu-item" id="wifi-2">3. HACKER WIFI (GOD MODE)</div>
         </div>
-        <p style="color: gray; margin-top: 10px;">[ESC] İptal</p>
+        <p style="color: gray; margin-top: 20px;">Menü: Yön Tuşları • Seç: YEŞİL Buton</p>
     </div>
 
     <!-- SIPATIFAY -->
     <div class="app-window" id="app-spoti">
         <h1 style="color: #1db954;">SIPATIFAY</h1>
-        <div style="background:#111; padding:20px; width:400px; border:1px solid #333;">
+        <div style="background:#111; padding:20px; width:100%; max-width:400px; border:1px solid #333; text-align: left;">
             <div class="menu-item active" id="spoti-0">1. Damar Arabesk</div>
             <div class="menu-item" id="spoti-1">2. Mışıl Mışıl Uyku (TEHLİKELİ)</div>
         </div>
-        <p id="spoti-status" style="color:yellow; margin-top:20px;"></p>
+        <p id="spoti-status" style="color:yellow; margin-top:20px; height: 20px;"></p>
     </div>
 
     <!-- NETFİLİZ -->
     <div class="app-window netfiliz-bg" id="app-netfiliz">
-        <h1 style="font-size: 4rem;">NETFİLİZ</h1>
-        <div class="gihun-img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz-Mv9iWv6u4qH2pW7e1c2r9k8o5z_x5u_3w&s'); margin: 0 auto;"></div>
-        <h2 style="margin-top:20px;">"BİZ İNSAN DEĞİLİZ..."</h2>
-        <h2 style="color: yellow;">"...BİZ ATIZ!"</h2>
-        <p>[ESC] Çıkış</p>
+        <h1 style="font-size: 2.5rem;">NETFİLİZ</h1>
+        <div class="gihun-img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz-Mv9iWv6u4qH2pW7e1c2r9k8o5z_x5u_3w&s');"></div>
+        <h3 style="margin-top:10px;">"BİZ İNSAN DEĞİLİZ..."</h3>
+        <h3 style="color: yellow;">"...BİZ ATIZ!"</h3>
+        <p>Çıkış: KIRMIZI Buton</p>
     </div>
 
     <!-- YUTUB -->
     <div class="app-window" id="app-yutub" style="background: #e1e1e1;">
         <div class="yutub-bg">
             <div class="yutub-video">
-                <i class="fas fa-user-tie" style="font-size: 5rem; margin-bottom: 20px;"></i>
-                <h2 id="yutub-text">DOLAR 100 TL OLACAK!</h2>
-                <h3 style="color: red; animation: blink 0.5s infinite;">YTD YTD YTD</h3>
+                <i class="fas fa-user-tie" style="font-size: 4rem; margin-bottom: 20px;"></i>
+                <h3 id="yutub-text" style="padding: 0 10px;">DOLAR 100 TL OLACAK!</h3>
+                <h4 style="color: red; animation: blink 0.5s infinite;">YTD YTD YTD</h4>
             </div>
-            <h3 style="text-align:left; margin-left:20px;">Ekonomi Çok İyi (Yalan Haber)</h3>
-            <p style="text-align:left; margin-left:20px;">1 Milyon İzlenme • Az önce</p>
+            <h4 style="text-align:left; margin-left:20px; color:black;">Ekonomi Çok İyi (Yalan Haber)</h4>
         </div>
     </div>
 
@@ -194,48 +271,45 @@
     <div class="app-window" id="app-browser">
         <div class="browser-frame">
             <div class="url-bar">
-                <div style="width:10px; height:10px; background:red; border-radius:50%;"></div>
-                <div style="width:10px; height:10px; background:yellow; border-radius:50%;"></div>
-                <div style="width:10px; height:10px; background:green; border-radius:50%;"></div>
-                <span id="url-text">chrome://new-tab</span>
+                <span id="url-text" style="flex:1;">chrome://new-tab</span>
+                <i class="fas fa-sync"></i>
             </div>
             <div class="web-view" id="web-view">
                 <!-- JS will fill this -->
             </div>
         </div>
-        <p style="color:white; margin-top:10px;">[OK] Seç • [ENTER] Git • [ESC] Kapat</p>
     </div>
 
     <!-- MAĞAZA -->
     <div class="app-window" id="app-store">
-        <h1 style="color:#00a8ff;">MAĞAZA (BEDAVA)</h1>
-        <div id="store-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;"></div>
+        <h1 style="color:#00a8ff;">MAĞAZA</h1>
+        <div id="store-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; width: 100%; max-width: 500px;"></div>
     </div>
 
     <!-- OYUN: FIFA 77 -->
     <div class="app-window" id="game-fifa">
-        <div style="position:absolute; top:20px; font-size:2rem; color:red; font-weight:bold; animation: blink 1s infinite;">
+        <div style="position:absolute; top:10px; font-size:1rem; color:red; font-weight:bold; animation: blink 1s infinite; text-align: center; width: 100%;">
             GALATASARAY ŞİKE MODU AKTİF
         </div>
         <canvas id="fifa-canvas" width="600" height="400"></canvas>
-        <p>Yön Tuşları: Kaleci (O da şikeci, tutmuyor)</p>
+        <p style="margin-top: 10px; font-size: 0.8rem;">Kontrol: Yön Tuşları</p>
     </div>
 
     <!-- OYUN: GTA -->
     <div class="app-window" id="game-gta">
-        <div style="position:absolute; top:20px; font-size:1.5rem; color:white; font-weight:bold; text-shadow: 2px 2px red;">
+        <div style="position:absolute; top:10px; font-size:1rem; color:white; font-weight:bold; text-shadow: 2px 2px red;">
             POLİS GELİYO KAÇ!
         </div>
         <canvas id="gta-canvas" width="400" height="500"></canvas>
-        <p>Yön Tuşları: Sür / Mermilerden Kaç</p>
+        <p style="margin-top: 10px; font-size: 0.8rem;">Kontrol: Sol/Sağ Ok Tuşları</p>
     </div>
 
     <!-- OYUN: SİMİT SİMULATOR -->
     <div class="app-window" id="game-simit">
-        <h1>SİMİT SİMULATOR 2077</h1>
+        <h1>SİMİT SİMULATOR</h1>
         <canvas id="simit-canvas" width="400" height="500"></canvas>
-        <p>Sağ/Sol ile simitleri yakala!</p>
-        <h2 id="simit-msg" style="color:red; display:none; position:absolute; font-size:2rem; text-align:center; background:black; padding: 10px; border: 2px solid red;">PUH SANA NİMETİ YERE DÜŞÜRDÜN!</h2>
+        <p style="margin-top: 10px; font-size: 0.8rem;">Kontrol: Sol/Sağ ile Yakala</p>
+        <div id="simit-msg" style="color:red; display:none; position:absolute; font-size:1.5rem; text-align:center; background:black; padding: 10px; border: 2px solid red; z-index:10;">PUH SANA NİMETİ YERE DÜŞÜRDÜN!</div>
     </div>
 
     <script>
@@ -254,10 +328,46 @@
             { id: 'browser', tab: 'web', title: 'Chrome', icon: 'fa-chrome', owned: true }
         ];
 
+        /* --- TOUCH INPUT SIMULATOR --- */
+        function simKey(keyName) {
+            // Trigger logic directly based on key
+            const e = { key: keyName, preventDefault: () => {} };
+            
+            if(state.screen === 'setup') return;
+
+            // Global: WiFi Menu from button
+            if((keyName === 'i' || keyName === 'I') && state.screen === 'home') {
+                openWifiMenu();
+                return;
+            }
+
+            if(state.screen === 'home') {
+                if(keyName === 'ArrowRight') state.idx++;
+                if(keyName === 'ArrowLeft') state.idx--;
+                if(state.idx < 0) state.idx = 0;
+                
+                if(keyName === 'Enter') launchApp();
+                
+                renderHome();
+            } 
+            else if (state.screen === 'app') {
+                if(keyName === 'Escape') closeApp();
+                else handleAppInput(e);
+            }
+        }
+
+        /* --- UI SWITCH TABS DIRECTLY --- */
+        function switchTab(tabName) {
+            if(state.screen !== 'home') return;
+            state.tab = tabName;
+            state.idx = 0;
+            renderHome();
+        }
+
         /* --- SETUP --- */
         function finishSetup() {
             let name = document.getElementById('reg-name').value;
-            if(!name) name = "Gariban";
+            if(!name) name = "Gariban Tablet";
             user.name = name;
             document.getElementById('username-display').innerText = name;
             document.getElementById('setup').style.display = 'none';
@@ -275,6 +385,11 @@
             items.forEach((item, i) => {
                 let div = document.createElement('div');
                 div.className = `card ${i === state.idx ? 'selected' : ''}`;
+                // Tıklayınca açma desteği
+                div.onclick = function() { 
+                    if(state.idx === i) launchApp(); 
+                    else { state.idx = i; renderHome(); }
+                };
                 
                 let show = item.owned;
                 if(item.id === 'simit' && !item.owned) show = false;
@@ -297,36 +412,16 @@
             if(state.wifi === 'home' || state.wifi === 'neighbor') w.classList.add('on');
             if(state.wifi === 'hacker') w.classList.add('hacker');
             
-            container.style.transform = `translateX(${state.idx * -240 + 50}px)`;
+            // Responsive Scroll Centering logic
+            // Base offset 220px, need to center active item
+            // Using simpler logic for tablet: center current index
+            // item width ~200px + gap 20px = 220px
+            container.style.transform = `translateX(${state.idx * -220}px)`;
         }
 
         /* --- INPUT --- */
         document.addEventListener('keydown', (e) => {
-            if(state.screen === 'setup') return;
-
-            // Global: WiFi Menu
-            if((e.key === 'i' || e.key === 'İ') && state.screen === 'home') {
-                openWifiMenu();
-                return;
-            }
-
-            if(state.screen === 'home') {
-                if(e.key === 'q' || e.key === 'Q') { state.tab = 'games'; state.idx = 0; }
-                if(e.key === 'w' || e.key === 'W') { state.tab = 'media'; state.idx = 0; }
-                if(e.key === 'e' || e.key === 'E') { state.tab = 'web'; state.idx = 0; }
-                
-                if(e.key === 'ArrowRight') state.idx++;
-                if(e.key === 'ArrowLeft') state.idx--;
-                if(state.idx < 0) state.idx = 0; // Boundary check simplified
-                
-                if(e.key === 'Enter') launchApp();
-                
-                renderHome();
-            } 
-            else if (state.screen === 'app') {
-                if(e.key === 'Escape') closeApp();
-                else handleAppInput(e);
-            }
+            simKey(e.key);
         });
 
         /* --- LAUNCHER --- */
@@ -338,7 +433,7 @@
 
             // Internet Check
             if(['netfiliz', 'yutub', 'browser', 'store'].includes(app.id) && state.wifi === 'none') {
-                showToast("HATA: İnternet Yok! [İ] tuşuna bas.");
+                showToast("HATA: İnternet Yok! [WIFI] butonuna bas.");
                 return;
             }
 
@@ -385,6 +480,7 @@
 
         /* --- WIFI LOGIC --- */
         function openWifiMenu() {
+            if(state.screen === 'setup') return;
             state.screen = 'app';
             state.app = 'wifi';
             state.subIdx = 0;
@@ -412,6 +508,9 @@
             websites.forEach((site, i) => {
                 let div = document.createElement('div');
                 div.className = `web-link ${state.subIdx === i ? 'hover' : ''}`;
+                // Tıklanabilir yapalım
+                div.onclick = function() { visitSite(site); };
+                
                 div.innerHTML = `<span>${site.name}</span> <small>${site.url}</small>`;
                 view.appendChild(div);
             });
@@ -424,19 +523,19 @@
              
              if(site.type === "jail") {
                  view.innerHTML = `
-                    <div style="text-align:center; margin-top:50px;">
-                        <i class="fas fa-dungeon" style="font-size:5rem; color:#555;"></i>
-                        <h1 style="color:red;">SİLİVRİ SOĞUKTUR...</h1>
-                        <p>Bu siteye erişim mahkeme kararıyla engellendi.</p>
+                    <div style="text-align:center; margin-top:20px;">
+                        <i class="fas fa-dungeon" style="font-size:4rem; color:#555;"></i>
+                        <h2 style="color:red;">SİLİVRİ SOĞUKTUR...</h2>
+                        <p>Erişim Engellendi.</p>
                     </div>`;
              } else if(site.type === "search") {
-                 view.innerHTML = `<h1 style="color:blue">Goggle</h1><input type="text" placeholder="Ara..." style="padding:10px; width:80%;">`;
+                 view.innerHTML = `<h2 style="color:blue">Goggle</h2><input type="text" placeholder="Ara..." style="padding:10px; width:80%;">`;
              } else if(site.type === "content") {
-                 view.innerHTML = `<h1>Simit Borsası</h1><p>Simit: 15 TL</p><p>Çay: 10 TL</p><p>Hisseler yükselişte!</p>`;
+                 view.innerHTML = `<h2>Simit Borsası</h2><p>Simit: 15 TL</p><p>Çay: 10 TL</p><p style="color:green">Hisseler yükselişte!</p>`;
              } else if(site.type === "hacker") {
-                 view.innerHTML = `<h1 style="color:#0f0; font-family:monospace;">HACKER ZONE</h1><p>Komşunun WiFi Şifresi: 123456</p>`;
+                 view.innerHTML = `<h2 style="color:#0f0; font-family:monospace;">HACKER ZONE</h2><p>Komşu WiFi Şifresi: 123456</p>`;
              } else if(site.type === "redirect") {
-                 view.innerHTML = `<h1>Yönlendiriliyor...</h1>`;
+                 view.innerHTML = `<h2>Yönlendiriliyor...</h2>`;
                  setTimeout(() => { closeApp(); }, 1000);
              }
         }
@@ -509,6 +608,7 @@
                 if(e.key === 'ArrowLeft') gtaX -= 15;
                 if(e.key === 'ArrowRight') gtaX += 15;
             }
+            // FIFA - Sadece kaleci yönlendirme (Şike var zaten)
         }
 
         /* --- UI HELPERS --- */
@@ -522,8 +622,20 @@
             let items = [ {id: 'simit', name: 'Simit Sim', price: 'BEDAVA'}, {id: 'halay', name: 'Halay VR', price: '50 TL'} ];
             items.forEach((it, i) => {
                 let div = document.createElement('div');
-                div.style.background = '#222'; div.style.padding = '20px';
+                div.style.background = '#222'; div.style.padding = '15px';
                 div.style.border = state.subIdx === i ? '2px solid white' : '2px solid transparent';
+                // Dokunmatik seçimi için
+                div.onclick = function() { 
+                    if(state.subIdx === i) {
+                        // Buy logic duplicate
+                        if(i===0) { apps.find(a=>a.id==='simit').owned=true; showToast("İndirildi!"); }
+                        else showToast("Para Yok!");
+                        renderStore();
+                    } else {
+                        state.subIdx = i; renderStore();
+                    }
+                };
+                
                 div.innerHTML = `<h3>${it.name}</h3><p>${it.price}</p>`;
                 if(it.id === 'simit' && apps.find(a=>a.id==='simit').owned) div.innerHTML += "<b style='color:green'>ALINDI</b>";
                 grid.appendChild(div);
@@ -557,7 +669,7 @@
                 ball.x += ball.dx; ball.y += ball.dy;
                 if(ball.y < 0 || ball.y > 400) ball.dy *= -1;
                 if(ball.x > 600 || ball.x < 0) { ball.x = 300; ball.y = 200; }
-                ctx.fillStyle = "yellow"; ctx.font = "20px Arial"; ctx.fillText("GALATASARAY: 5 - RAKİP: 0", 180, 30);
+                ctx.fillStyle = "yellow"; ctx.font = "20px Arial"; ctx.fillText("GALATASARAY: 5 - RAKİP: 0", 150, 30);
             }, 30);
         }
 
@@ -635,7 +747,7 @@
         const styleSheet = document.createElement("style");
         styleSheet.innerText = `
             @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
-            .menu-item { padding: 10px; color: #555; }
+            .menu-item { padding: 10px; color: #555; cursor: pointer; }
             .menu-item.active { background: #333; color: white; border-left: 5px solid green; }
         `;
         document.head.appendChild(styleSheet);
