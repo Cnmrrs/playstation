@@ -2,15 +2,15 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>PıleySiteyşın 6n</title>
+    <title>PıleySiteyşın 6</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Saira:wght@300;500;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
         :root {
-            --bg-dark: #0a0a0a;
+            --bg-dark: #050505;
             --china-red: #d32f2f;
-            --cheap-plastic: #333;
+            --fake-gold: #ffd700;
         }
 
         body {
@@ -18,100 +18,79 @@
             font-family: 'Saira', sans-serif; overflow: hidden; height: 100vh; user-select: none;
         }
 
-        /* DUVAR KAĞIDI */
+        /* DUVAR KAĞIDI & EFEKTLER */
         #bg-layer {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 90%);
         }
-
-        /* MADE IN CHINA DAMGASI */
         .watermark {
             position: fixed; bottom: 10px; right: 10px; 
-            font-family: Arial, sans-serif; font-size: 12px; color: #555; 
-            opacity: 0.7; pointer-events: none; z-index: 50;
+            font-family: Arial, sans-serif; font-size: 14px; color: #333; 
+            font-weight: bold; pointer-events: none; z-index: 50;
         }
 
-        /* ÜST BAR */
-        .top-bar {
-            display: flex; justify-content: space-between; padding: 25px 50px; align-items: center;
-            border-bottom: 2px solid #222; background: rgba(0,0,0,0.8);
-        }
-        .logo-area { font-size: 1.5rem; font-weight: bold; font-style: italic; display: flex; align-items: center; gap: 10px; }
-        .logo-icon { color: var(--china-red); font-size: 2rem; }
-        
-        .tabs { display: flex; gap: 30px; }
-        .tab { color: #555; font-weight: bold; padding: 5px 15px; border-radius: 4px; }
-        .tab.active { color: white; background: #222; border-bottom: 3px solid var(--china-red); }
-        .tab-hint { font-size: 0.7rem; color: #444; margin-left: 5px; vertical-align: super; }
-
-        .user-area { display: flex; align-items: center; gap: 15px; }
-        .avatar { width: 40px; height: 40px; background: #444; border-radius: 50%; border: 2px solid #666; }
-
-        /* KURULUM EKRANI (İLK AÇILIŞ) */
-        .setup-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 9999; display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-        }
-        .setup-box {
-            width: 500px; background: #111; border: 2px solid var(--china-red); padding: 40px; text-align: center;
-        }
-        .setup-input {
-            width: 90%; padding: 10px; margin: 10px 0; background: #222; border: 1px solid #444; color: white;
-            font-family: 'Saira', sans-serif;
-        }
-        .setup-btn {
-            background: var(--china-red); color: white; border: none; padding: 15px 30px; 
-            font-size: 1.2rem; cursor: pointer; margin-top: 20px; font-weight: bold;
-        }
-        .setup-btn:hover { background: #b71c1c; }
-
-        /* MENÜ KARTLARI */
-        .card-container {
-            display: flex; gap: 20px; padding: 50px; overflow: visible;
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); margin-top: 20px;
-        }
-        .card {
-            min-width: 200px; height: 300px; background: #151515; border-radius: 10px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border: 3px solid transparent; position: relative;
-        }
-        .card.selected {
-            transform: scale(1.1); border-color: white; background: #222; z-index: 10;
-            box-shadow: 0 10px 40px rgba(255,255,255,0.1);
-        }
-        .card i { font-size: 4rem; margin-bottom: 20px; color: #888; }
-        .card-title { font-size: 1.2rem; font-weight: bold; text-align: center; }
-
-        /* UYGULAMA PENCERELERİ (GENEL) */
-        .app-window {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(10,10,10,0.98); z-index: 1000; display: none;
-            flex-direction: column; align-items: center; justify-content: center;
-        }
-        
-        /* JUMPSCARE */
-        .jumpscare-overlay {
+        /* JUMPSCARE (GİZLİ) */
+        .scare-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: black; z-index: 99999; display: none;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/8/87/Scary_face.png'); /* Örnek korkunç yüz */
+            background-image: url('https://i.pinimg.com/originals/8a/c3/0c/8ac30c45d3e02047ca44ebde41b2bc75.jpg'); /* Korkunç Yüz */
             background-size: cover; background-position: center;
+            animation: shake 0.1s infinite;
+        }
+        @keyframes shake {
+            0% { transform: translate(2px, 2px) rotate(0deg); }
+            50% { transform: translate(-2px, -2px) rotate(2deg); }
+            100% { transform: translate(2px, -2px) rotate(-2deg); }
         }
 
-        /* OYUN MENÜLERİ */
-        .game-menu {
-            width: 600px; height: 400px; background: #000; border: 5px solid white;
+        /* KURULUM EKRANI */
+        .setup-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #111; z-index: 10000; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; border: 10px solid var(--china-red);
+        }
+        .setup-input { margin: 10px; padding: 10px; width: 300px; background: #222; color: white; border: 1px solid #555; }
+        .setup-btn { background: var(--china-red); color: white; padding: 15px 40px; font-size: 1.2rem; cursor: pointer; border: none; font-weight: bold; }
+
+        /* ANA ARAYÜZ */
+        .top-bar {
+            display: flex; justify-content: space-between; padding: 20px 40px; background: rgba(20,20,20,0.9); border-bottom: 2px solid #333;
+        }
+        .tabs { display: flex; gap: 20px; }
+        .tab { padding: 5px 15px; color: #777; font-weight: bold; cursor: pointer; }
+        .tab.active { color: white; border-bottom: 3px solid var(--china-red); }
+
+        .wifi-icon { margin-right: 10px; color: #444; }
+        .wifi-icon.on { color: #0f0; text-shadow: 0 0 5px #0f0; }
+
+        .card-container {
+            display: flex; gap: 30px; padding: 50px; margin-top: 20px; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .card {
+            min-width: 220px; height: 320px; background: #222; border-radius: 10px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-family: 'Press Start 2P', cursive; text-align: center;
+            border: 4px solid transparent; position: relative;
         }
-        .gm-btn { margin: 10px; padding: 10px; color: #888; cursor: pointer; }
-        .gm-btn.active { color: yellow; text-decoration: underline; }
+        .card.selected { transform: scale(1.1); border-color: white; background: #333; z-index: 10; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        .card i { font-size: 5rem; margin-bottom: 20px; color: #888; }
+        .lock-icon { position: absolute; top: 10px; right: 10px; color: red; font-size: 1.5rem; }
 
-        /* PROFİL */
-        .profile-box {
-            width: 600px; background: #222; border: 1px solid #444; padding: 30px;
+        /* APP PENCERELERİ */
+        .app-window {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center;
         }
-        .stat-row { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #333; }
+
+        /* NETFİLİZ */
+        .netfiliz-bg { background: #000; color: #e50914; text-align: center; }
+        .gihun-img { width: 300px; height: 300px; background: gray; margin-bottom: 20px; background-size: cover; border: 5px solid #222; }
+
+        /* YUTUB */
+        .yutub-bg { background: white; color: black; text-align: center; width: 80%; height: 80%; position: relative; }
+        .yutub-video { height: 70%; background: black; display: flex; align-items: center; justify-content: center; color: white; flex-direction: column; }
+
+        /* GAME CANVAS */
+        canvas { background: #333; border: 4px solid white; image-rendering: pixelated; }
 
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -119,427 +98,414 @@
 <body>
 
     <div id="bg-layer"></div>
-    <div class="watermark">Made in China | Model: PS6-Fake-v1.0</div>
+    <div class="watermark">Made in China | SONY© Değildir</div>
+    <div class="scare-overlay" id="jumpscare"></div>
 
-    <!-- KURULUM SİHİRBAZI -->
-    <div class="setup-overlay" id="setup-screen">
-        <div class="setup-box">
-            <h1 style="color: var(--china-red);">KURULUM SİHİRBAZI</h1>
-            <p>Hoşgeldiniz. Lütfen bilgilerinizi (çalmamız için) girin.</p>
-            <input type="text" id="reg-name" class="setup-input" placeholder="Adınız Soyadınız">
-            <input type="text" id="reg-tc" class="setup-input" placeholder="TC Kimlik (Vermesen de buluruz)">
-            <input type="text" id="reg-blood" class="setup-input" placeholder="Kan Grubun (Böbrek için)">
-            <button class="setup-btn" onclick="completeSetup()">KAYDI TAMAMLA & RUHUNU SAT</button>
-        </div>
+    <!-- KURULUM -->
+    <div class="setup-screen" id="setup">
+        <h1 style="color: var(--china-red);">KURULUM SİHİRBAZI</h1>
+        <p>Bilgilerinizi girin, gerisine karışmayın.</p>
+        <input type="text" id="reg-name" class="setup-input" placeholder="Adınız">
+        <input type="text" id="reg-tc" class="setup-input" placeholder="TC Kimlik (Zorunlu)">
+        <input type="text" id="reg-mother" class="setup-input" placeholder="Kızlık Soyadı (Güvenlik İçin)">
+        <button class="setup-btn" onclick="finishSetup()">KAYIT OL</button>
     </div>
 
-    <!-- JUMPSCARE -->
-    <div class="jumpscare-overlay" id="scare-box"></div>
-
-    <!-- ANA ARAYÜZ -->
+    <!-- UI -->
     <div class="top-bar">
-        <div class="logo-area">
-            <i class="fab fa-playstation logo-icon"></i> <span id="console-name">PıleySiteyşın...</span>
+        <div style="font-size: 1.5rem; font-weight: bold;">
+            <i class="fab fa-playstation" style="color:red;"></i> PıleySiteyşın 6
         </div>
         <div class="tabs">
-            <div class="tab active" id="tab-games">OYUNLAR <span class="tab-hint">[Q]</span></div>
-            <div class="tab" id="tab-media">MEDYA <span class="tab-hint">[W]</span></div>
-            <div class="tab" id="tab-web">İNTERNET <span class="tab-hint">[E]</span></div>
+            <div class="tab active" id="tab-games">OYUNLAR [Q]</div>
+            <div class="tab" id="tab-media">MEDYA [W]</div>
+            <div class="tab" id="tab-web">WEB [E]</div>
         </div>
-        <div class="user-area">
-            <span id="user-display">Misafir</span>
-            <div class="avatar"></div>
-        </div>
-    </div>
-
-    <div style="width: 100%; overflow: hidden; height: 500px;">
-        <div class="card-container" id="card-row">
-            <!-- Kartlar JS ile gelecek -->
+        <div>
+            <i class="fas fa-wifi wifi-icon" id="wifi-icon"></i>
+            <span id="username-display">Misafir</span>
         </div>
     </div>
 
-    <div style="position:fixed; bottom: 30px; left: 50px; color: #888;">
-        [OK TUŞLARI] Gezin - [ENTER] Seç - [ESC] Geri
+    <div style="overflow: hidden; width: 100%; margin-top: 50px;">
+        <div class="card-container" id="card-row"></div>
     </div>
 
-    <!-- === APP PENCERELERİ === -->
+    <div style="position:fixed; bottom: 20px; left: 50px; color: gray;">
+        [OK] Gezin • [ENTER] Seç • [ESC] Geri • [İ] İnternet Aç/Kapa
+    </div>
 
-    <!-- SPOTIFY -->
+    <!-- === UYGULAMALAR === -->
+
+    <!-- SIPATIFAY -->
     <div class="app-window" id="app-spoti">
         <h1 style="color: #1db954;">SIPATIFAY</h1>
-        <div style="width: 400px; background: #111; border: 1px solid #333; padding: 20px;">
-            <div class="gm-btn active" id="spoti-0">1. Damar FM</div>
-            <div class="gm-btn" id="spoti-1">2. Mışıl Mışıl Uyku (TEHLİKELİ)</div>
-            <div class="gm-btn" id="spoti-2">3. Ankara Havaları</div>
+        <div style="background:#111; padding:20px; width:400px; border:1px solid #333;">
+            <div class="menu-item active" id="spoti-0">1. Damar Arabesk</div>
+            <div class="menu-item" id="spoti-1">2. Mışıl Mışıl Uyku (RAHATLATICI)</div>
         </div>
-        <p id="spoti-status" style="margin-top: 20px; color: yellow;"></p>
+        <p id="spoti-status" style="color:yellow; margin-top:20px;"></p>
+    </div>
+
+    <!-- NETFİLİZ -->
+    <div class="app-window netfiliz-bg" id="app-netfiliz">
+        <h1 style="font-size: 4rem;">NETFİLİZ</h1>
+        <div class="gihun-img" style="background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz-Mv9iWv6u4qH2pW7e1c2r9k8o5z_x5u_3w&s'); margin: 0 auto;"></div>
+        <h2 style="margin-top:20px;">"BİZ İNSAN DEĞİLİZ..."</h2>
+        <h2 style="color: yellow;">"...BİZ ATIZ!"</h2>
+        <p>[ESC] Çıkış</p>
+    </div>
+
+    <!-- YUTUB -->
+    <div class="app-window" id="app-yutub" style="background: #e1e1e1;">
+        <div class="yutub-bg">
+            <div class="yutub-video">
+                <i class="fas fa-user-tie" style="font-size: 5rem; margin-bottom: 20px;"></i>
+                <h2 id="yutub-text">DOLAR 100 TL OLACAK!</h2>
+                <h3 style="color: red; animation: blink 0.5s infinite;">YTD YTD YTD</h3>
+            </div>
+            <h3 style="text-align:left; margin-left:20px;">Ekonomi Çok İyi (Yalan Haber)</h3>
+            <p style="text-align:left; margin-left:20px;">1 Milyon İzlenme • Az önce</p>
+        </div>
     </div>
 
     <!-- MAĞAZA -->
     <div class="app-window" id="app-store">
-        <h1 style="color: #00a8ff;">MAĞAZA (BEDAVA)</h1>
-        <div id="store-list" style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-            <!-- JS ile dolacak -->
-        </div>
+        <h1 style="color:#00a8ff;">MAĞAZA (BEDAVA)</h1>
+        <div id="store-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;"></div>
     </div>
 
-    <!-- PROFİL -->
-    <div class="app-window" id="app-profile">
-        <h1>KULLANICI PROFİLİ</h1>
-        <div class="profile-box">
-            <div class="stat-row"><span>Kullanıcı:</span> <span id="prof-name">-</span></div>
-            <div class="stat-row"><span>Kredi Notu:</span> <span style="color:red;">-1500 (Batak)</span></div>
-            <div class="stat-row"><span>Kayıtlı Oyunlar:</span> <span id="prof-games">Yok</span></div>
-            <div class="stat-row"><span>Garanti:</span> <span>Bitti (Dün)</span></div>
-        </div>
-    </div>
-
-    <!-- FIFA 77 GAME -->
+    <!-- OYUN: FIFA 77 -->
     <div class="app-window" id="game-fifa">
-        <div class="game-menu" id="fifa-menu">
-            <h1 style="color: yellow; text-shadow: 4px 4px 0 #000;">FIFA 77</h1>
-            <p style="font-size: 0.6rem; color: #aaa;">CRACKED BY REVOLT</p>
-            <div style="margin-top: 40px;">
-                <div class="gm-btn active" id="fifa-opt-0">MAÇA ÇIK</div>
-                <div class="gm-btn" id="fifa-opt-1">ŞİKE YAP (100TL)</div>
-            </div>
+        <div style="position:absolute; top:20px; font-size:2rem; color:red; font-weight:bold; animation: blink 1s infinite;">
+            GALATASARAY ŞİKE MODU AKTİF
         </div>
-        <canvas id="fifa-canvas" width="600" height="400" style="background:green; display:none; border: 5px solid white;"></canvas>
+        <canvas id="fifa-canvas" width="600" height="400"></canvas>
+        <p>Yön Tuşları: Kaleci (O da şikeci, tutmuyor)</p>
     </div>
 
-    <!-- GTA BAĞCILAR GAME -->
-    <div class="app-window" id="game-gta">
-        <div class="game-menu" id="gta-menu" style="background: #222;">
-            <h1 style="color: white; text-shadow: 4px 4px 0 purple;">GTA: BAĞCILAR</h1>
-            <p style="font-size: 0.6rem; color: orange;">TOFAŞ EDITION</p>
-            <div style="margin-top: 40px;">
-                <div class="gm-btn active" id="gta-opt-0">BAĞCILAR TURU</div>
-                <div class="gm-btn" id="gta-opt-1">KAVGA ET (KİLİTLİ)</div>
-            </div>
-        </div>
-        <canvas id="gta-canvas" width="500" height="500" style="background:#333; display:none; border: 5px solid white;"></canvas>
+    <!-- OYUN: SİMİT SİMULATOR -->
+    <div class="app-window" id="game-simit">
+        <h1>SİMİT SİMULATOR 2077</h1>
+        <canvas id="simit-canvas" width="400" height="500"></canvas>
+        <p>Sağ/Sol ile simitleri yakala!</p>
     </div>
 
     <script>
-        /* --- VERİTABANI (RAM) --- */
-        let user = {
-            name: "Misafir",
-            tc: "",
-            games: [] // Satın alınan oyunlar buraya gelir
-        };
-
-        const allItems = [
-            // Games
-            { id: 'fifa', tab: 'games', title: 'FIFA 77', icon: 'fa-futbol', owned: false, price: 'Bedava' },
-            { id: 'gta', tab: 'games', title: 'GTA: Bağcılar', icon: 'fa-car', owned: false, price: 'Bedava' },
-            { id: 'store', tab: 'games', title: 'MAĞAZA', icon: 'fa-shopping-bag', owned: true, price: '' },
-            // Media
-            { id: 'spoti', tab: 'media', title: 'Sıpatifay', icon: 'fa-spotify', owned: true, price: '' },
-            { id: 'netfiliz', tab: 'media', title: 'Netfiliz', icon: 'fa-play', owned: true, price: '' },
-            // Web
-            { id: 'profile', tab: 'web', title: 'Profilim', icon: 'fa-user-circle', owned: true, price: '' },
-            { id: 'browser', tab: 'web', title: 'Google (Çakma)', icon: 'fa-globe', owned: true, price: '' }
+        /* --- STATE --- */
+        let user = { name: "", games: [] };
+        let state = { tab: 'games', idx: 0, screen: 'setup', wifi: false, app: null, subIdx: 0 };
+        
+        const apps = [
+            { id: 'fifa', tab: 'games', title: 'FIFA 77', icon: 'fa-futbol', owned: true },
+            { id: 'gta', tab: 'games', title: 'GTA Bağcılar', icon: 'fa-car', owned: true },
+            { id: 'simit', tab: 'games', title: 'Simit Sim.', icon: 'fa-cookie', owned: false }, // Store'dan alınacak
+            { id: 'store', tab: 'games', title: 'Mağaza', icon: 'fa-shopping-cart', owned: true },
+            { id: 'spoti', tab: 'media', title: 'Sıpatifay', icon: 'fa-spotify', owned: true },
+            { id: 'netfiliz', tab: 'media', title: 'Netfiliz', icon: 'fa-play', owned: true },
+            { id: 'yutub', tab: 'media', title: 'YuTub', icon: 'fa-youtube', owned: true },
+            { id: 'browser', tab: 'web', title: 'İnternet', icon: 'fa-globe', owned: true }
         ];
 
-        /* --- STATE --- */
-        let state = {
-            activeTab: 'games',
-            index: 0,
-            screen: 'home', // home, app
-            activeApp: null,
-            subIndex: 0 // app içi menüler için
-        };
-
         /* --- SETUP --- */
-        function completeSetup() {
-            const name = document.getElementById('reg-name').value;
-            if(!name) { alert("Adını girmedin! O kadar da değil."); return; }
-            
+        function finishSetup() {
+            let name = document.getElementById('reg-name').value;
+            if(!name) name = "Gariban";
             user.name = name;
-            user.tc = document.getElementById('reg-tc').value;
-            
-            // UI Güncelle
-            document.getElementById('setup-screen').style.display = 'none';
-            document.getElementById('console-name').innerText = "PıleySiteyşın 6";
-            document.getElementById('user-display').innerText = user.name;
-            
-            // Başlangıç oyunlarını ekle
-            addGameToLibrary('fifa');
-            addGameToLibrary('gta');
-
-            renderMenu();
-        }
-
-        function addGameToLibrary(id) {
-            let game = allItems.find(x => x.id === id);
-            if(game && !game.owned) {
-                game.owned = true;
-                user.games.push(game.title);
-            }
+            document.getElementById('username-display').innerText = name;
+            document.getElementById('setup').style.display = 'none';
+            state.screen = 'home';
+            renderHome();
         }
 
         /* --- RENDER --- */
-        function renderMenu() {
+        function renderHome() {
             const container = document.getElementById('card-row');
             container.innerHTML = '';
             
-            const currentItems = allItems.filter(i => i.tab === state.activeTab);
+            // Tab Filter
+            let items = apps.filter(a => a.tab === state.tab);
             
-            currentItems.forEach((item, idx) => {
+            // Add bought games to 'games' tab dynamically if not already in list
+            if(state.tab === 'games') {
+                // Logic handled by 'owned' flag in apps array
+            }
+
+            items.forEach((item, i) => {
                 let div = document.createElement('div');
-                div.className = `card ${idx === state.index ? 'selected' : ''}`;
-                div.innerHTML = `
-                    <i class="fas ${item.icon}"></i>
-                    <div class="card-title">${item.title}</div>
-                    ${!item.owned ? '<div style="color:orange; font-size:0.8rem; margin-top:5px;">İNDİRİLMEDİ</div>' : ''}
-                `;
-                container.appendChild(div);
+                div.className = `card ${i === state.idx ? 'selected' : ''}`;
+                
+                // Show Simit Sim only if owned or if it's the store item
+                let show = item.owned;
+                if(item.id === 'simit' && !item.owned) show = false; // Don't show in library if not bought
+                if(item.id === 'store') show = true;
+
+                if(show || item.tab !== 'games') {
+                     div.innerHTML = `<i class="fas ${item.icon}"></i><h2>${item.title}</h2>`;
+                     if(item.id === 'simit') div.innerHTML += `<small style="color:gold">YENİ!</small>`;
+                     container.appendChild(div);
+                } else {
+                     // Placeholder for unowned
+                     div.style.display = 'none'; 
+                }
             });
 
-            // Tab Highlights
+            // UI Updates
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(`tab-${state.activeTab}`).classList.add('active');
-
-            // Scroll focus
-            const offset = state.index * -220;
-            container.style.transform = `translateX(${offset + 50}px)`;
+            document.getElementById(`tab-${state.tab}`).classList.add('active');
+            
+            let w = document.getElementById('wifi-icon');
+            w.className = state.wifi ? "fas fa-wifi wifi-icon on" : "fas fa-wifi wifi-icon";
+            
+            // Scroll
+            container.style.transform = `translateX(${state.idx * -240 + 50}px)`;
         }
 
         /* --- INPUT --- */
         document.addEventListener('keydown', (e) => {
-            // Jumpscare aktifse tuşları kilitle
-            if(document.getElementById('scare-box').style.display === 'block') return;
+            if(state.screen === 'setup') return;
 
-            if (state.screen === 'home') {
-                // Tab Değişimi
-                if (e.key === 'q' || e.key === 'Q') { state.activeTab = 'games'; state.index = 0; }
-                if (e.key === 'w' || e.key === 'W') { state.activeTab = 'media'; state.index = 0; }
-                if (e.key === 'e' || e.key === 'E') { state.activeTab = 'web'; state.index = 0; }
+            // Global: WiFi Toggle
+            if(e.key === 'i' || e.key === 'İ') {
+                state.wifi = !state.wifi;
+                renderHome();
+                return;
+            }
+
+            if(state.screen === 'home') {
+                if(e.key === 'q' || e.key === 'Q') { state.tab = 'games'; state.idx = 0; }
+                if(e.key === 'w' || e.key === 'W') { state.tab = 'media'; state.idx = 0; }
+                if(e.key === 'e' || e.key === 'E') { state.tab = 'web'; state.idx = 0; }
                 
-                // Menü Hareketi
-                let list = allItems.filter(i => i.tab === state.activeTab);
-                if (e.key === 'ArrowRight' && state.index < list.length - 1) state.index++;
-                if (e.key === 'ArrowLeft' && state.index > 0) state.index--;
+                let items = apps.filter(a => a.tab === state.tab && (a.owned || a.tab !== 'games'));
+                // Note: Filtering logic for navigation needs to match render logic roughly
                 
-                if (e.key === 'Enter') launchApp(list[state.index]);
+                if(e.key === 'ArrowRight') state.idx++;
+                if(e.key === 'ArrowLeft') state.idx--;
+                if(state.idx < 0) state.idx = 0;
                 
-                renderMenu();
+                if(e.key === 'Enter') launchApp();
+                
+                renderHome();
             } 
             else if (state.screen === 'app') {
-                if (e.key === 'Escape') closeApp();
+                if(e.key === 'Escape') closeApp();
                 else handleAppInput(e);
             }
         });
 
-        /* --- APP LAUNCHER --- */
-        function launchApp(item) {
-            state.activeApp = item.id;
+        /* --- LAUNCHER --- */
+        function launchApp() {
+            // Get current valid list again
+            let items = apps.filter(a => a.tab === state.tab);
+            // Quick fix for the hiding logic in render:
+            if(state.tab === 'games') items = items.filter(i => i.owned || i.id === 'store');
+            
+            let app = items[state.idx];
+            if(!app) return;
+
+            // Internet Check
+            if(['netfiliz', 'yutub', 'browser', 'store'].includes(app.id) && !state.wifi) {
+                alert("HATA: İnternet Fişi Çekik! [İ] tuşuna bas.");
+                return;
+            }
+
             state.screen = 'app';
-            state.subIndex = 0; // Reset sub menu index
+            state.app = app.id;
+            state.subIdx = 0;
+            
+            document.querySelectorAll('.app-window').forEach(d => d.style.display = 'none');
 
-            // Hide all apps first
-            document.querySelectorAll('.app-window').forEach(w => w.style.display = 'none');
-
-            if(item.id === 'spoti') {
+            if(app.id === 'spoti') {
                 document.getElementById('app-spoti').style.display = 'flex';
                 updateSpotiUI();
             }
-            else if(item.id === 'store') {
+            else if(app.id === 'netfiliz') document.getElementById('app-netfiliz').style.display = 'flex';
+            else if(app.id === 'yutub') document.getElementById('app-yutub').style.display = 'flex';
+            else if(app.id === 'store') {
                 document.getElementById('app-store').style.display = 'flex';
                 renderStore();
             }
-            else if(item.id === 'profile') {
-                document.getElementById('app-profile').style.display = 'flex';
-                document.getElementById('prof-name').innerText = user.name;
-                document.getElementById('prof-games').innerText = user.games.join(', ') || "Fakirsin oyunun yok";
-            }
-            else if(item.id === 'fifa') {
-                if(!item.owned) { alert("Önce Mağazadan indir!"); closeApp(); return; }
+            else if(app.id === 'fifa') {
                 document.getElementById('game-fifa').style.display = 'flex';
-                updateFifaUI();
+                startFIFA();
             }
-            else if(item.id === 'gta') {
-                if(!item.owned) { alert("Önce Mağazadan indir!"); closeApp(); return; }
-                document.getElementById('game-gta').style.display = 'flex';
-                updateGtaUI();
+            else if(app.id === 'simit') {
+                 document.getElementById('game-simit').style.display = 'flex';
+                 startSimit();
             }
-            else {
-                alert("Bu özellik bozuk. Sonra gel.");
+            else if(app.id === 'gta') {
+                alert("GTA Bağcılar şu an polis baskınında. Açılamıyor.");
+                closeApp();
+            }
+            else if(app.id === 'browser') {
+                alert("Devlet bu siteye erişimi engelledi.");
                 closeApp();
             }
         }
 
         function closeApp() {
             state.screen = 'home';
-            state.activeApp = null;
-            document.querySelectorAll('.app-window').forEach(w => w.style.display = 'none');
-            // Reset games
-            stopFIFA();
-            stopGTA();
-            document.getElementById('fifa-menu').style.display = 'flex';
-            document.getElementById('fifa-canvas').style.display = 'none';
-            document.getElementById('gta-menu').style.display = 'flex';
-            document.getElementById('gta-canvas').style.display = 'none';
+            document.querySelectorAll('.app-window').forEach(d => d.style.display = 'none');
+            stopGameLoops();
+            renderHome();
         }
 
         /* --- APP LOGICS --- */
 
-        // -- SPOTIFY --
-        function handleSpotiInput(e) {
-            if(e.key === 'ArrowDown') state.subIndex = (state.subIndex + 1) % 3;
-            if(e.key === 'ArrowUp') state.subIndex = (state.subIndex - 1 + 3) % 3;
-            if(e.key === 'Enter') {
-                if(state.subIndex === 1) { // Jumpscare index
-                    let conf = confirm("UYARI: Bu şarkı aşırı rahatlatır. Kalbin dayanmayabilir. Emin misin?");
-                    if(conf) {
-                        document.getElementById('spoti-status').innerText = "Çalıyor: Mışıl Mışıl (Yükleniyor...)";
-                        setTimeout(() => {
-                            // BOO!
-                            let scare = document.getElementById('scare-box');
-                            scare.style.display = 'block';
-                            // Titret ve kapat
-                            setTimeout(() => { scare.style.display = 'none'; document.getElementById('spoti-status').innerText = ""; }, 2000);
-                        }, 2000);
-                    }
-                } else {
-                    document.getElementById('spoti-status').innerText = "Çalıyor: Dımtıs Dımtıs...";
-                }
-            }
-            updateSpotiUI();
-        }
-        function updateSpotiUI() {
-            document.querySelectorAll('#app-spoti .gm-btn').forEach((b, i) => {
-                b.className = i === state.subIndex ? 'gm-btn active' : 'gm-btn';
-            });
-        }
-
-        // -- STORE --
+        // Store
         function renderStore() {
-            const list = document.getElementById('store-list');
-            list.innerHTML = '';
-            const buyable = [
-                {id: 'simit', name: 'Simit Simulator 2077'},
-                {id: 'halay', name: 'Düğün Halayı VR'},
-                {id: 'fifa', name: 'FIFA 77 (Yama)'},
-                {id: 'gta', name: 'GTA Bağcılar (DLC)'}
+            let grid = document.getElementById('store-grid');
+            grid.innerHTML = '';
+            let items = [
+                {id: 'simit', name: 'Simit Simulator', price: 'BEDAVA'},
+                {id: 'halay', name: 'Halay Başı VR', price: '50 TL'}
             ];
             
-            buyable.forEach((g, i) => {
+            items.forEach((it, i) => {
                 let div = document.createElement('div');
-                div.style.background = '#222';
-                div.style.padding = '20px';
-                div.style.border = i === state.subIndex ? '2px solid yellow' : '2px solid transparent';
-                div.innerHTML = `<h3>${g.name}</h3><p>Fiyat: BEDAVA</p>`;
-                list.appendChild(div);
+                div.style.background = '#222'; div.style.padding = '20px';
+                div.style.border = state.subIdx === i ? '2px solid white' : '2px solid transparent';
+                div.innerHTML = `<h3>${it.name}</h3><p>${it.price}</p>`;
+                if(it.id === 'simit' && apps.find(a=>a.id==='simit').owned) div.innerHTML += "<b style='color:green'>ALINDI</b>";
+                grid.appendChild(div);
             });
-        }
-        function handleStoreInput(e) {
-            if(e.key === 'ArrowRight') state.subIndex = (state.subIndex + 1) % 4;
-            if(e.key === 'ArrowLeft') state.subIndex = (state.subIndex - 1 + 4) % 4;
-            if(e.key === 'Enter') {
-                alert("Satın alındı! (Zaten bedavaydı, kazık yemedin aferin.)");
-                // Kullanıcıya ekle (Simülasyon)
-                if(!user.games.includes("Yeni Oyun")) user.games.push("Çöp Oyun " + (user.games.length+1));
-            }
-            renderStore();
         }
 
-        // -- FIFA 77 --
-        let fifaInt;
-        let ballX = 300, ballY = 200, ballDX = 5, ballDY = 5;
-        function updateFifaUI() {
-             document.querySelectorAll('#fifa-menu .gm-btn').forEach((b, i) => {
-                b.className = i === state.subIndex ? 'gm-btn active' : 'gm-btn';
-            });
+        // Spotify Jumpscare
+        function updateSpotiUI() {
+            let opts = document.querySelectorAll('.menu-item');
+            opts.forEach((o, i) => o.style.color = state.subIdx === i ? 'white' : '#555');
         }
-        function startFIFA() {
-            document.getElementById('fifa-menu').style.display = 'none';
-            let cvs = document.getElementById('fifa-canvas');
-            cvs.style.display = 'block';
-            let ctx = cvs.getContext('2d');
+
+        function handleAppInput(e) {
+            if(state.app === 'spoti') {
+                if(e.key === 'ArrowDown' || e.key === 'ArrowUp') { state.subIdx = state.subIdx === 0 ? 1 : 0; updateSpotiUI(); }
+                if(e.key === 'Enter') {
+                    if(state.subIdx === 1) { // Mışıl Mışıl
+                        document.getElementById('spoti-status').innerText = "Yükleniyor...";
+                        setTimeout(() => {
+                            // JUMPSCARE
+                            document.getElementById('jumpscare').style.display = 'block';
+                            // 2 sn sonra kapat
+                            setTimeout(() => { 
+                                document.getElementById('jumpscare').style.display = 'none'; 
+                                document.getElementById('spoti-status').innerText = "";
+                            }, 2000);
+                        }, 3000);
+                    } else {
+                         document.getElementById('spoti-status').innerText = "Müslüm Baba Çalıyor...";
+                    }
+                }
+            }
             
-            fifaInt = setInterval(() => {
+            if(state.app === 'store') {
+                if(e.key === 'ArrowRight') state.subIdx = 1;
+                if(e.key === 'ArrowLeft') state.subIdx = 0;
+                if(e.key === 'Enter') {
+                    if(state.subIdx === 0) { // Simit
+                        let g = apps.find(a => a.id === 'simit');
+                        g.owned = true;
+                        alert("Simit Simulator İndirildi! Oyunlar sekmesine bak.");
+                    } else {
+                        alert("Paran yetersiz (Kredi kartı reddedildi).");
+                    }
+                    renderStore();
+                }
+            }
+
+            if(state.app === 'simit') {
+                if(e.key === 'ArrowLeft') playerX -= 20;
+                if(e.key === 'ArrowRight') playerX += 20;
+            }
+        }
+
+        /* --- GAMES --- */
+        let gameInterval;
+        let playerX = 180;
+        let objects = []; // For Simit game
+
+        function stopGameLoops() { clearInterval(gameInterval); }
+
+        // FIFA 77 Logic
+        function startFIFA() {
+            let cvs = document.getElementById('fifa-canvas');
+            let ctx = cvs.getContext('2d');
+            let ball = {x: 300, y: 200, dx: 5, dy: 5};
+            
+            gameInterval = setInterval(() => {
                 ctx.fillStyle = "green"; ctx.fillRect(0,0,600,400);
-                // Saha Çizgileri
-                ctx.strokeStyle = "white"; ctx.lineWidth = 5; ctx.strokeRect(50, 50, 500, 300);
+                
+                // Saha
+                ctx.strokeStyle = "white"; ctx.strokeRect(50,50,500,300);
+                ctx.beginPath(); ctx.arc(300,200,50,0,Math.PI*2); ctx.stroke();
                 
                 // Top
-                ctx.fillStyle = "white"; ctx.beginPath(); ctx.arc(ballX, ballY, 10, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = "white"; ctx.beginPath(); ctx.arc(ball.x, ball.y, 10, 0, Math.PI*2); ctx.fill();
                 
-                ballX += ballDX; ballY += ballDY;
-                if(ballX < 0 || ballX > 600) ballDX *= -1;
-                if(ballY < 0 || ballY > 400) ballDY *= -1;
+                ball.x += ball.dx; ball.y += ball.dy;
+                
+                // Duvarlar
+                if(ball.y < 0 || ball.y > 400) ball.dy *= -1;
+                
+                // Şike Modu: Top asla dışarı çıkmaz, kaleye girer
+                if(ball.x > 600) { ball.x = 300; ball.y = 200; } // Gol
+                if(ball.x < 0) { ball.x = 300; ball.y = 200; } // Gol
                 
                 ctx.fillStyle = "yellow"; ctx.font = "20px Arial";
-                ctx.fillText("HAKEM KÖR", 250, 30);
+                ctx.fillText("GALATASARAY: 5 - RAKİP: 0", 180, 30);
+                
             }, 30);
         }
-        function stopFIFA() { clearInterval(fifaInt); }
-        function handleFifaInput(e) {
-            if(document.getElementById('fifa-menu').style.display !== 'none') {
-                if(e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                    state.subIndex = state.subIndex === 0 ? 1 : 0;
-                    updateFifaUI();
-                }
-                if(e.key === 'Enter') {
-                    if(state.subIndex === 0) startFIFA();
-                    else alert("Şike parası yatırıldı. Maçı kazandın.");
-                }
-            }
-        }
 
-        // -- GTA BAĞCILAR --
-        let gtaInt;
-        let carX = 250;
-        function updateGtaUI() {
-             document.querySelectorAll('#gta-menu .gm-btn').forEach((b, i) => {
-                b.className = i === state.subIndex ? 'gm-btn active' : 'gm-btn';
-            });
-        }
-        function startGTA() {
-            document.getElementById('gta-menu').style.display = 'none';
-            let cvs = document.getElementById('gta-canvas');
-            cvs.style.display = 'block';
+        // Simit Simulator Logic
+        function startSimit() {
+            let cvs = document.getElementById('simit-canvas');
             let ctx = cvs.getContext('2d');
+            objects = [];
+            let score = 0;
             
-            gtaInt = setInterval(() => {
-                ctx.fillStyle = "#333"; ctx.fillRect(0,0,500,500);
-                // Şeritler
-                ctx.fillStyle = "white"; ctx.fillRect(240, 0, 10, 500); ctx.fillRect(260, 0, 10, 500);
+            gameInterval = setInterval(() => {
+                ctx.fillStyle = "#87CEEB"; ctx.fillRect(0,0,400,500); // Gökyüzü
                 
-                // Araba (Tofaş)
-                ctx.fillStyle = "red"; ctx.fillRect(carX, 400, 40, 70);
-                ctx.fillStyle = "yellow"; ctx.fillRect(carX, 400, 10, 5); ctx.fillRect(carX+30, 400, 10, 5); // Farlar
+                // Oyuncu (Martı)
+                ctx.fillStyle = "white"; ctx.fillRect(playerX, 450, 40, 20);
                 
-                ctx.fillStyle = "white"; ctx.fillText("KORNA: ENTER", 10, 30);
+                // Simit Spawn
+                if(Math.random() < 0.05) objects.push({x: Math.random()*380, y: 0});
+                
+                // Simitler
+                ctx.fillStyle = "orange";
+                objects.forEach((o, i) => {
+                    o.y += 5;
+                    ctx.beginPath(); ctx.arc(o.x, o.y, 10, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = "white"; ctx.beginPath(); ctx.arc(o.x, o.y, 4, 0, Math.PI*2); ctx.fill(); // Susam
+                    ctx.fillStyle = "orange"; 
+                    
+                    if(o.y > 500) objects.splice(i, 1);
+                    // Yeme
+                    if(Math.abs(o.x - playerX) < 30 && o.y > 440) {
+                        score++;
+                        objects.splice(i, 1);
+                    }
+                });
+                
+                ctx.fillStyle = "black"; ctx.font = "20px Arial";
+                ctx.fillText("Yenen Simit: " + score, 10, 30);
+                
             }, 30);
         }
-        function stopGTA() { clearInterval(gtaInt); }
-        function handleGtaInput(e) {
-             if(document.getElementById('gta-menu').style.display !== 'none') {
-                if(e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-                    state.subIndex = state.subIndex === 0 ? 1 : 0;
-                    updateGtaUI();
-                }
-                if(e.key === 'Enter') {
-                    if(state.subIndex === 0) startGTA();
-                    else alert("Kavga etmek için levyen yok.");
-                }
-            } else {
-                if(e.key === 'ArrowLeft') carX -= 10;
-                if(e.key === 'ArrowRight') carX += 10;
-                if(e.key === 'Enter') alert("DÜT DÜÜÜÜÜÜT!");
-            }
-        }
 
-        /* --- INPUT ROUTER --- */
-        function handleAppInput(e) {
-            if(state.activeApp === 'spoti') handleSpotiInput(e);
-            else if(state.activeApp === 'store') handleStoreInput(e);
-            else if(state.activeApp === 'fifa') handleFifaInput(e);
-            else if(state.activeApp === 'gta') handleGtaInput(e);
-        }
+        /* --- BLINK ANIMATION --- */
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = `
+            @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0; } 100% { opacity: 1; } }
+            .menu-item { padding: 10px; color: #555; }
+            .menu-item.active { background: #333; color: white; border-left: 5px solid green; }
+        `;
+        document.head.appendChild(styleSheet);
 
+        renderHome();
     </script>
 </body>
 </html>
